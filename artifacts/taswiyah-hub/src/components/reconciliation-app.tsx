@@ -100,6 +100,22 @@ async function storageDelete(key: string): Promise<void> {
   } catch { /* تجاهل */ }
   try { localStorage.removeItem(key); } catch { /* تجاهل */ }
 }
+
+function normalizeIdSet(value: unknown): Set<number> {
+  if (value instanceof Set) {
+    return new Set(Array.from(value).map(toNum).filter(Number.isFinite));
+  }
+  if (Array.isArray(value)) {
+    return new Set(value.map(toNum).filter(Number.isFinite));
+  }
+  if (value && typeof value === "object") {
+    // Older sessions could contain a JSON-serialized Set, which becomes an
+    // object instead of an iterable array. Object keys preserve any numeric ids.
+    return new Set(Object.keys(value).map(toNum).filter(Number.isFinite));
+  }
+  return new Set();
+}
+
 // ─── Visa detection ────────────────────────────────────────────────────────────
 const VISA_NUM_RE = new RegExp("[/-]\\s*(\\d{4})(?!\\d)");
 function extractVisaNumber(rawName: string): string | null {
@@ -1798,7 +1814,7 @@ export default function App({ initialPage = "recon2" }: { initialPage?: PageId }
         setHeldItems(session.heldItems || []);
         setReturnedHeldBank(session.returnedHeldBank || []);
         setReturnedHeldCashier(session.returnedHeldCashier || []);
-        setRejectedSpecialCashierIds(new Set(session.rejectedSpecialCashierIds || []));
+        setRejectedSpecialCashierIds(normalizeIdSet(session.rejectedSpecialCashierIds));
         if ((session.bankRowsRaw?.length || session.savedMatches?.length)) {
           setSessionRestoredNotice(true);
         }
@@ -1821,7 +1837,8 @@ export default function App({ initialPage = "recon2" }: { initialPage?: PageId }
         jawwalBankFileSnapshots, jawwalCashFileSnapshots,
         manualGroups, savedMatches, nameAliases,
         rejectedPairs: Array.from(rejectedPairs),
-        visaItems, heldItems, returnedHeldBank, returnedHeldCashier, rejectedSpecialCashierIds
+        visaItems, heldItems, returnedHeldBank, returnedHeldCashier,
+        rejectedSpecialCashierIds: Array.from(rejectedSpecialCashierIds)
       });
     }, 500);
     return () => clearTimeout(t);
