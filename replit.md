@@ -1,6 +1,6 @@
-# [Project name]
+# Taswiyah Hub
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+منصة عربية لمطابقة كشوف الكاشير والبنك، تصنيف الفروقات، وحفظ جلسات التسوية بين المنصات.
 
 ## Run & Operate
 
@@ -22,23 +22,31 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/taswiyah-hub/` — تطبيق الويب الرئيسي ومساحة التسوية.
+- `artifacts/taswiyah-hub/src/components/reconciliation-app.tsx` — استيراد Excel، المطابقة، الحفظ، التصدير، وتقرير المقارنة.
+- `artifacts/taswiyah-hub/src/components/Reconciliation2.tsx` — سير عمل المنصات A → B → C.
+- `artifacts/taswiyah-hub/src/index.css` — ألوان وهوية Taswiyah Hub.
+- `artifacts/taswiyah-hub/public/taswiyah-logo.png` — الشعار المستخدم في الدخول والقائمة.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- التطبيق يعمل محلياً في المتصفح ويحفظ جلسات الكشوف والمطابقات في storage المتاح، مع دعم الاستكمال من ملف Excel المصدّر.
+- ملف التصدير يحتوي على ورقة مستقلة باسم `تقرير المقارنة` قبل أوراق التفاصيل.
+- منطق المطابقة الأصلي محفوظ ومفصول عن طبقة الهوية والتنقل حتى يمكن تطوير واجهة التقرير دون تغيير نتائج المطابقة.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+يتيح Taswiyah Hub رفع كشوف الكاشير والحوالات، تشغيل المطابقة التلقائية أو اليدوية بالاسم ونطاق المبلغ، تصنيف الفيزا ومحفظة محمود والمعلقات وجوال بي، حفظ الجلسات للترحيل من منصة A إلى B ثم C، ومراجعة تقرير فروقات مرئي وتصديره إلى Excel.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- اللغة الأساسية عربية وواجهة التطبيق RTL.
+- الاسم التجاري هو Taswiyah Hub والعبارة: «محطتك الأولى لتسوية الحسابات بدقة.»
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- الحزمة `xlsx` يجب أن تبقى ضمن حزمة `@workspace/taswiyah-hub`، وليس في جذر مساحة العمل.
+- تشغيل البناء اليدوي يحتاج متغيرات الخدمة التي يضيفها workflow؛ استخدم `typecheck` أو workflow المُدار للتحقق من التطبيق.
 
 ## Pointers
 

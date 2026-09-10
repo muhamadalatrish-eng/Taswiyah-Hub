@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Taswiyah Hub"
+description = "منصة عربية لتسوية الحسابات ومطابقة كشوف الكاشير والبنك، مع تقارير فروقات مصنفة وحفظ جلسات الترحيل بين المنصات."
+version = "1.0.0"
+id = "artifacts/taswiyah-hub"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23873
+
+[services.development]
+run = "pnpm --filter @workspace/taswiyah-hub run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/taswiyah-hub", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/taswiyah-hub/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23873"
+BASE_PATH = "/"
