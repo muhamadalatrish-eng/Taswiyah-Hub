@@ -1,0 +1,33 @@
+{
+  "name": "taswiyah-hub-monorepo",
+  "version": "1.0.0",
+  "description": "Taswiyah Hub - Financial Management Application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "cross-env NODE_ENV=development node api-server/server.js",
+    "dev:web": "cross-env VITE_API_URL=http://localhost:3000 VITE_BASE_PATH=/ npm --prefix taswiyah-hub run dev",
+    "build:web": "npm --prefix taswiyah-hub run build",
+    "build:api": "echo \"API server build complete\"",
+    "build": "npm run build:api && npm run build:web",
+    "start": "cross-env NODE_ENV=production node api-server/server.js",
+    "preview:web": "npm --prefix taswiyah-hub run preview",
+    "lint": "concurrently \"npm --prefix taswiyah-hub run lint\"",
+    "install:all": "npm install && npm --prefix api-server install && npm --prefix taswiyah-hub install",
+    "clean": "rmdir /s /q node_modules taswiyah-hub/node_modules api-server/node_modules 2>nul || true"
+  },
+  "keywords": [
+    "financial",
+    "management",
+    "arabic",
+    "taswiyah"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {}
+}
