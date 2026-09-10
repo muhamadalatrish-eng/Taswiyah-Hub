@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { router, db } from './routes.js';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
+
+// Routes
+app.use(router);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -94,6 +98,18 @@ app.listen(PORT, HOST, () => {
   console.log('📝 Mock Credentials:');
   console.log('   Username: admin');
   console.log('   Password: admin123');
+  console.log('');
+  console.log('API Endpoints:');
+  console.log('   POST   /api/transactions/add         - إضافة عملية');
+  console.log('   GET    /api/pending                  - قائمة المنتظر');
+  console.log('   POST   /api/matching/auto            - مطابقة آلية');
+  console.log('   GET    /api/matching/assisted        - مساعد المطابقة');
+  console.log('   POST   /api/matching/manual          - مطابقة يدوية');
+  console.log('   GET    /api/matching/manual          - قائمة المطابقة اليدوية');
+  console.log('   POST   /api/matching/confirm/:id     - تأكيد المطابقة ✅');
+  console.log('   GET    /api/confirmed                - قائمة المؤكد');
+  console.log('   GET    /api/reports/status           - تقرير الحالة');
+  console.log('   GET    /api/reports/matches          - سجل المطابقات');
   console.log('');
   console.log('⏹️  Press Ctrl+C to stop the server');
   console.log('');
